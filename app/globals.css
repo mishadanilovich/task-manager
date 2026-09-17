@@ -1,26 +1,176 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(0.977 0.008 85);
+  --foreground: oklch(0.245 0.022 50);
+  --card: oklch(0.995 0.005 85);
+  --card-foreground: oklch(0.245 0.022 50);
+  --popover: oklch(0.995 0.005 85);
+  --popover-foreground: oklch(0.245 0.022 50);
+  --primary: oklch(0.545 0.142 40);
+  --primary-foreground: oklch(0.985 0.01 85);
+  --primary-edge: oklch(0.4 0.14 38);
+  --secondary: oklch(0.928 0.018 76);
+  --secondary-foreground: oklch(0.245 0.022 50);
+  --muted: oklch(0.945 0.014 80);
+  --muted-foreground: oklch(0.505 0.022 58);
+  --accent: oklch(0.9 0.032 70);
+  --accent-foreground: oklch(0.245 0.022 50);
+  --destructive: oklch(0.495 0.145 30);
+  --destructive-foreground: oklch(0.985 0.01 30);
+  --border: oklch(0.885 0.018 76);
+  --border-hover: oklch(0.79 0.03 70);
+  --input: oklch(0.885 0.018 76);
+  --ring: oklch(0.545 0.142 40);
+  --radius: 0.625rem;
+
+  --success: oklch(0.5 0.075 148);
+  --success-bg: oklch(0.935 0.03 148);
+  --warning: oklch(0.545 0.095 72);
+  --warning-bg: oklch(0.945 0.045 82);
+  --overdue: oklch(0.495 0.145 30);
+  --overdue-bg: oklch(0.945 0.035 32);
+
+  --status-new: oklch(0.505 0.022 58);
+  --status-progress: oklch(0.545 0.095 72);
+  --status-done: oklch(0.5 0.075 148);
+  --priority-low: oklch(0.505 0.022 58);
+  --priority-medium: oklch(0.545 0.095 72);
+  --priority-high: oklch(0.495 0.145 30);
+
+  --shadow-raised: 0 1px 2px oklch(0.3 0.04 50 / 0.07), 0 6px 16px -8px oklch(0.3 0.04 50 / 0.18);
+  --shadow-overlay: 0 12px 32px -14px oklch(0.3 0.04 50 / 0.4);
+  --shadow-dialog: 0 16px 40px -18px oklch(0.3 0.04 50 / 0.5);
+}
+
+.dark {
+  --background: oklch(0.196 0.012 54);
+  --foreground: oklch(0.945 0.012 84);
+  --card: oklch(0.245 0.014 54);
+  --card-foreground: oklch(0.945 0.012 84);
+  --popover: oklch(0.245 0.014 54);
+  --popover-foreground: oklch(0.945 0.012 84);
+  --primary: oklch(0.705 0.125 44);
+  --primary-foreground: oklch(0.205 0.03 44);
+  --primary-edge: oklch(0.58 0.13 42);
+  --secondary: oklch(0.315 0.016 54);
+  --secondary-foreground: oklch(0.945 0.012 84);
+  --muted: oklch(0.285 0.014 54);
+  --muted-foreground: oklch(0.735 0.016 78);
+  --accent: oklch(0.355 0.03 52);
+  --accent-foreground: oklch(0.945 0.012 84);
+  --destructive: oklch(0.715 0.135 32);
+  --destructive-foreground: oklch(0.205 0.03 32);
+  --border: oklch(0.325 0.016 54);
+  --border-hover: oklch(0.45 0.022 56);
+  --input: oklch(0.325 0.016 54);
+  --ring: oklch(0.745 0.12 46);
+
+  --success: oklch(0.755 0.095 150);
+  --success-bg: oklch(0.295 0.038 150);
+  --warning: oklch(0.81 0.105 78);
+  --warning-bg: oklch(0.305 0.042 76);
+  --overdue: oklch(0.715 0.135 32);
+  --overdue-bg: oklch(0.295 0.05 30);
+
+  --status-new: oklch(0.735 0.016 78);
+  --status-progress: oklch(0.81 0.105 78);
+  --status-done: oklch(0.755 0.095 150);
+  --priority-low: oklch(0.735 0.016 78);
+  --priority-medium: oklch(0.81 0.105 78);
+  --priority-high: oklch(0.715 0.135 32);
+
+  --shadow-raised: 0 1px 2px oklch(0 0 0 / 0.4), 0 10px 24px -12px oklch(0 0 0 / 0.6);
+  --shadow-overlay: 0 12px 32px -14px oklch(0 0 0 / 0.6);
+  --shadow-dialog: 0 16px 40px -18px oklch(0 0 0 / 0.7);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-edge: var(--primary-edge);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-overdue: var(--overdue);
+  --color-overdue-bg: var(--overdue-bg);
+
+  --color-status-new: var(--status-new);
+  --color-status-progress: var(--status-progress);
+  --color-status-done: var(--status-done);
+  --color-priority-low: var(--priority-low);
+  --color-priority-medium: var(--priority-medium);
+  --color-priority-high: var(--priority-high);
+
+  --font-sans: var(--font-hanken-grotesk);
+  --font-display: var(--font-bricolage-grotesque);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --radius-sm: calc(var(--radius) - 3px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 6px);
+
+  --shadow-raised: var(--shadow-raised);
+  --shadow-overlay: var(--shadow-overlay);
+  --shadow-dialog: var(--shadow-dialog);
+
+  --text-display-xl: 3.5rem;
+  --text-display-xl--line-height: 1;
+  --text-display-xl--letter-spacing: -0.02em;
+  --text-display-l: 2.375rem;
+  --text-display-l--line-height: 1.05;
+  --text-display-l--letter-spacing: -0.02em;
+  --text-display-m: 1.625rem;
+  --text-display-m--line-height: 1.15;
+  --text-display-m--letter-spacing: -0.015em;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.25;
+  --text-title--letter-spacing: -0.01em;
+  --text-body-l: 0.9375rem;
+  --text-body-l--line-height: 1.55;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.55;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.45;
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.3;
+  --text-label--letter-spacing: 0.11em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background font-sans text-foreground;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
 }
