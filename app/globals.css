@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -40,9 +41,10 @@
   --priority-medium: oklch(0.545 0.095 72);
   --priority-high: oklch(0.495 0.145 30);
 
-  --shadow-raised: 0 1px 2px oklch(0.3 0.04 50 / 0.07), 0 6px 16px -8px oklch(0.3 0.04 50 / 0.18);
-  --shadow-overlay: 0 12px 32px -14px oklch(0.3 0.04 50 / 0.4);
-  --shadow-dialog: 0 16px 40px -18px oklch(0.3 0.04 50 / 0.5);
+  --elevation-raised:
+    0 1px 2px oklch(0.3 0.04 50 / 0.07), 0 6px 16px -8px oklch(0.3 0.04 50 / 0.18);
+  --elevation-overlay: 0 12px 32px -14px oklch(0.3 0.04 50 / 0.4);
+  --elevation-dialog: 0 16px 40px -18px oklch(0.3 0.04 50 / 0.5);
 }
 
 .dark {
@@ -82,9 +84,9 @@
   --priority-medium: oklch(0.81 0.105 78);
   --priority-high: oklch(0.715 0.135 32);
 
-  --shadow-raised: 0 1px 2px oklch(0 0 0 / 0.4), 0 10px 24px -12px oklch(0 0 0 / 0.6);
-  --shadow-overlay: 0 12px 32px -14px oklch(0 0 0 / 0.6);
-  --shadow-dialog: 0 16px 40px -18px oklch(0 0 0 / 0.7);
+  --elevation-raised: 0 1px 2px oklch(0 0 0 / 0.4), 0 10px 24px -12px oklch(0 0 0 / 0.6);
+  --elevation-overlay: 0 12px 32px -14px oklch(0 0 0 / 0.6);
+  --elevation-dialog: 0 16px 40px -18px oklch(0 0 0 / 0.7);
 }
 
 @theme inline {
@@ -133,9 +135,9 @@
   --radius-lg: calc(var(--radius) + 4px);
   --radius-xl: calc(var(--radius) + 6px);
 
-  --shadow-raised: var(--shadow-raised);
-  --shadow-overlay: var(--shadow-overlay);
-  --shadow-dialog: var(--shadow-dialog);
+  --shadow-raised: var(--elevation-raised);
+  --shadow-overlay: var(--elevation-overlay);
+  --shadow-dialog: var(--elevation-dialog);
 
   --text-display-xl: 3.5rem;
   --text-display-xl--line-height: 1;
@@ -158,6 +160,18 @@
   --text-label: 0.6875rem;
   --text-label--line-height: 1.3;
   --text-label--letter-spacing: 0.11em;
+
+  --animate-skeleton: skeleton 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @layer base {
