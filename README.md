@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Стопка
 
-## Getting Started
+Таск-менеджер на Next.js: списки задач, дедлайны, приоритеты и статусы. Тестовое задание для Middle Frontend-разработчика.
 
-First, run the development server:
+**Стек:** Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, shadcn/ui, react-hook-form + Zod, Vitest 5, Storybook 10.
+
+## Запуск
+
+Нужны Node.js 24 и pnpm 10.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Приложение откроется на http://localhost:3000. Поля формы входа уже заполнены демо-доступом:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+admin@example.com
+Admin123!
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Никакой настройки не требуется: данные живут в памяти процесса и заполняются при старте. Переменные окружения необязательны — список и значения по умолчанию в [`.env.example`](.env.example).
 
-## Learn More
+| Переменная        | По умолчанию                                | Назначение                                                              |
+| ----------------- | ------------------------------------------- | ----------------------------------------------------------------------- |
+| `AUTH_EMAIL`      | `admin@example.com`                         | логин                                                                   |
+| `AUTH_PASSWORD`   | `Admin123!`                                 | пароль                                                                  |
+| `DATA_LATENCY_MS` | `350` в разработке, `0` в остальных режимах | искусственная задержка слоя данных, чтобы были видны состояния загрузки |
 
-To learn more about Next.js, take a look at the following resources:
+## Тесты
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm test            # юнит-тесты и Storybook-истории одной командой
+pnpm test:watch      # то же в режиме наблюдения
+pnpm storybook       # Storybook на http://localhost:6006
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`pnpm test` запускает два проекта Vitest:
 
-## Deploy on Vercel
+- **`unit`** — в Node. Доменная логика, форматирование, слой данных, проверка учётных данных. 93 теста.
+- **`storybook`** — в headless Chromium через Playwright. Истории с `play`-функциями и проверкой доступности axe: любое нарушение роняет тест. 9 историй.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Перед первым запуском Storybook-тестов нужен браузер Playwright:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm exec playwright install chromium
+```
+
+### Что покрыто
+
+| Файл                              | Что проверяет                                                                        |
+| --------------------------------- | ------------------------------------------------------------------------------------ |
+| `domain/sort-tasks.test.ts`       | правило сортировки из задания: просроченные → ближе дедлайн → приоритет → done внизу |
+| `domain/list-stats.test.ts`       | счётчики карточки, прогресс, индикатор                                               |
+| `domain/deadline.test.ts`         | окно 48 часов, расстояние до дедлайна, склейка даты и времени                        |
+| `domain/schemas.test.ts`          | валидация форм                                                                       |
+| `lib/format.test.ts`              | русские склонения, подписи дедлайнов                                                 |
+| `server/db/memory.test.ts`        | репозиторий в памяти, каскадное удаление, seed                                       |
+| `server/auth/credentials.test.ts` | проверка логина и пароля                                                             |
+
+| История                  | `play`                                                         |
+| ------------------------ | -------------------------------------------------------------- |
+| `Auth/LoginForm`         | отправка формы, ошибки валидации, ошибка сервера, показ пароля |
+| `Tasks/TaskStatusSelect` | смена статуса, откат при ошибке сервера                        |
+| `Tasks/StatusFilter`     | фильтр пишет статус в URL                                      |
+| `Tasks/TaskForm`         | создание задачи, обязательное название                         |
+
+## Слой данных
+
+Компоненты не знают, откуда приходят данные. Чтение и запись идут только через сервер.
+
+```
+Чтение   RSC-страница → features/*/queries.ts → server/db (репозиторий)
+Запись   Server Action → проверка Zod → server/db → revalidatePath
+```
+
+**Чтение.** Страницы — серверные компоненты. Они вызывают функции из `features/*/queries.ts`, те проверяют сессию и обращаются к репозиторию. Клиентского `fetch` и `useEffect` для данных нет.
+
+**Запись.** Все изменения — Server Actions в `features/*/actions.ts`. Каждое начинается с `requireSession()`, заново проверяет входные данные той же Zod-схемой, что и форма, пишет в репозиторий и сбрасывает кэш затронутых страниц. Результат приходит в едином формате `ActionResult<T>`: успех с данными или ошибка с текстом и ошибками полей.
+
+**Хранилище.** `server/db/repository.ts` описывает интерфейс, `server/db/memory.ts` — реализация в памяти. Методы асинхронные, как у настоящей БД, поэтому замена на Postgres не затронет вызывающий код. Seed в `server/db/seed.ts` строится от текущего времени, так что при каждом запуске есть просроченные задачи, задачи с дедлайном в ближайшие 48 часов и полностью закрытый список.
+
+Данные сбрасываются при перезапуске сервера — для тестового задания это осознанное упрощение.
+
+**Состояние в URL.** Поиск по спискам (`?q=`) и фильтр по статусу (`?status=`) хранятся в адресе, а не в состоянии компонентов: фильтрует сервер, ссылкой можно поделиться, кнопка «назад» работает.
+
+**Оптимистичное обновление.** Смена статуса задачи отображается сразу через `useOptimistic` и откатывается, если сервер вернул ошибку.
+
+## Структура
+
+```
+app/                  маршруты: вход, списки, список задач, 404, ошибки
+domain/               правила предметной области — без React и Next, покрыты тестами
+server/db/            репозиторий, реализация в памяти, seed
+server/auth/          сессия и проверка учётных данных
+features/<область>/   компоненты, Server Actions и запросы конкретной области
+components/ui/        компоненты shadcn/ui
+components/layout/    шапка, логотип, служебные экраны
+lib/                  форматирование, хук форм, общие типы
+```
+
+Зависимости идут в одну сторону: `domain` ← `server` ← `features` ← `app`.
+
+## Решения
+
+**Сортировка задач.** Внутри открытых: просроченные выше всех, затем по близости дедлайна, при равном дедлайне — по приоритету. Задачи без дедлайна — в конце открытых. Выполненные всегда внизу, свежезакрытые выше. При полном равенстве — по названию, чтобы порядок не менялся между рендерами.
+
+**Дедлайн** — дата и необязательное время. Если время не указано, дедлайном считается конец дня. Прошедшие даты разрешены: задачу можно завести задним числом.
+
+**Индикатор списка:** красный — есть просроченные задачи, жёлтый — дедлайн в ближайшие 48 часов, зелёный — все задачи выполнены, нейтральный — всё в графике. Цвет всегда дублируется глифом и текстом.
+
+**Время в доменных функциях** передаётся параметром `now`, функции не вызывают `new Date()` сами. Поэтому тесты детерминированы без подмены таймеров.
+
+**Авторизация намеренно простая.** Логин и пароль сверяются с переменными окружения, в httpOnly-cookie кладётся email. Cookie не подписана — для приложения с одним демо-пользователем это достаточно. `proxy.ts` делает быстрый редирект по наличию cookie, настоящая проверка — `requireSession()` в каждой странице и каждом Server Action.
+
+**Компоненты shadcn/ui отредактированы на месте** в `components/ui/`, как рекомендует сам shadcn: цвета, радиусы и тени заданы токенами в `app/globals.css`, форма компонентов — вариантами в `cva`. Перед обновлением компонента через `shadcn add` нужно смотреть дифф, чтобы не затереть правки.
+
+**Несуществующий список** показывает страницу «Список не найден», но со статусом 200, а не 404: страница стримится с `loading.tsx`, и статус уходит клиенту раньше, чем выясняется, что списка нет. Next в этом случае добавляет `noindex`. Это задокументированный компромисс стриминга.
+
+## Скрипты
+
+| Команда                                   | Что делает                                      |
+| ----------------------------------------- | ----------------------------------------------- |
+| `pnpm dev`                                | сервер разработки                               |
+| `pnpm build` / `pnpm start`               | продакшен-сборка и запуск                       |
+| `pnpm test`                               | все тесты                                       |
+| `pnpm lint` / `pnpm lint:fix`             | ESLint                                          |
+| `pnpm format` / `pnpm format:check`       | Prettier                                        |
+| `pnpm typecheck`                          | генерация типов маршрутов и проверка TypeScript |
+| `pnpm storybook` / `pnpm build-storybook` | Storybook                                       |
+
+Перед каждым коммитом husky и lint-staged прогоняют изменённые файлы через ESLint и Prettier.
