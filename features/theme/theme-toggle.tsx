@@ -1,9 +1,9 @@
 "use client";
 
-import { cn } from "cn";
 import { useTheme } from "next-themes";
 
 import { useMounted } from "@/lib/use-mounted";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const THEMES = [
   { value: "light", label: "День" },
@@ -26,29 +26,22 @@ export function ThemeToggle() {
 
   return (
     <>
-      <div
-        role="radiogroup"
+      <ToggleGroup
+        type="single"
+        variant="segmented"
+        size="compact"
+        spacing={0.5}
+        value={current ?? ""}
+        onValueChange={(value) => value && setTheme(value)}
         aria-label="Тема оформления"
-        className="hidden gap-0.5 rounded-[9px] border border-border bg-muted p-[3px] sm:flex"
+        className="hidden rounded-[9px] sm:flex"
       >
         {THEMES.map(({ value, label }) => (
-          <button
-            key={value}
-            type="button"
-            role="radio"
-            aria-checked={current === value}
-            onClick={() => setTheme(value)}
-            className={cn(
-              "rounded-sm px-[11px] py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors",
-              current === value
-                ? "border border-border bg-card text-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
+          <ToggleGroupItem key={value} value={value}>
             {label}
-          </button>
+          </ToggleGroupItem>
         ))}
-      </div>
+      </ToggleGroup>
 
       <button
         type="button"

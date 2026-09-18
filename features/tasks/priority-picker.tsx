@@ -1,13 +1,18 @@
 "use client";
 
-import { cn } from "cn";
-
 import { TASK_PRIORITIES, type TaskPriority } from "@/domain/task";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const OPTIONS: Record<TaskPriority, { label: string; activeClassName: string }> = {
-  low: { label: "Low", activeClassName: "border-border text-foreground" },
-  medium: { label: "Med", activeClassName: "border-priority-medium text-priority-medium" },
-  high: { label: "High", activeClassName: "border-priority-high text-priority-high" },
+  low: { label: "Low", activeClassName: "" },
+  medium: {
+    label: "Med",
+    activeClassName: "data-[state=on]:border-priority-medium data-[state=on]:text-priority-medium",
+  },
+  high: {
+    label: "High",
+    activeClassName: "data-[state=on]:border-priority-high data-[state=on]:text-priority-high",
+  },
 };
 
 export type PriorityPickerProps = {
@@ -19,34 +24,26 @@ export type PriorityPickerProps = {
 
 export function PriorityPicker({ value, onChange, disabled, id }: PriorityPickerProps) {
   return (
-    <div
+    <ToggleGroup
       id={id}
-      role="radiogroup"
+      type="single"
+      variant="segmented"
+      spacing={0.5}
+      value={value}
+      onValueChange={(next) => next && onChange(next as TaskPriority)}
+      disabled={disabled}
       aria-label="Приоритет"
-      className="flex gap-0.5 rounded-md border border-border bg-muted p-[3px]"
+      className="h-10 w-full"
     >
-      {TASK_PRIORITIES.map((priority) => {
-        const checked = value === priority;
-
-        return (
-          <button
-            key={priority}
-            type="button"
-            role="radio"
-            aria-checked={checked}
-            disabled={disabled}
-            onClick={() => onChange(priority)}
-            className={cn(
-              "flex-1 rounded-sm border px-1 py-[7px] text-center font-mono text-[10.5px] tracking-[0.06em] uppercase transition-colors",
-              checked
-                ? cn("bg-card font-semibold", OPTIONS[priority].activeClassName)
-                : "border-transparent text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {OPTIONS[priority].label}
-          </button>
-        );
-      })}
-    </div>
+      {TASK_PRIORITIES.map((priority) => (
+        <ToggleGroupItem
+          key={priority}
+          value={priority}
+          className={`h-full flex-1 text-[10.5px] tracking-[0.06em] ${OPTIONS[priority].activeClassName}`}
+        >
+          {OPTIONS[priority].label}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
   );
 }
