@@ -76,8 +76,8 @@ export function LoginForm({ action, defaultValues = DEMO_CREDENTIALS }: LoginFor
           render={({ field }) => (
             <FormItem className="mb-6 gap-[7px]">
               <FormLabel>Пароль</FormLabel>
-              <FormControl>
-                <div className="relative flex">
+              <div className="relative flex">
+                <FormControl>
                   <Input
                     type={passwordVisible ? "text" : "password"}
                     autoComplete="current-password"
@@ -85,15 +85,15 @@ export function LoginForm({ action, defaultValues = DEMO_CREDENTIALS }: LoginFor
                     className="pr-[86px]"
                     {...field}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setPasswordVisible((visible) => !visible)}
-                    className="absolute top-1/2 right-3 -translate-y-1/2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase hover:text-foreground"
-                  >
-                    {passwordVisible ? "Скрыть" : "Показать"}
-                  </button>
-                </div>
-              </FormControl>
+                </FormControl>
+                <button
+                  type="button"
+                  onClick={() => setPasswordVisible((visible) => !visible)}
+                  className="absolute top-1/2 right-3 -translate-y-1/2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase hover:text-foreground"
+                >
+                  {passwordVisible ? "Скрыть" : "Показать"}
+                </button>
+              </div>
               <FormMessage />
             </FormItem>
           )}
