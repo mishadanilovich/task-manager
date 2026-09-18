@@ -12,6 +12,8 @@ import { db } from "@/server/db";
 const invalidForm = (error: z.ZodError) =>
   actionError("Проверьте поля формы", z.flattenError(error).fieldErrors);
 
+export type SavedTask = { id: string; title: string };
+
 function revalidateList(listId: string) {
   revalidatePath("/lists");
   revalidatePath(`/lists/${listId}`);
@@ -20,7 +22,7 @@ function revalidateList(listId: string) {
 export async function createTask(
   listId: string,
   values: unknown,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<SavedTask>> {
   await requireSession();
 
   const parsed = taskFormSchema.safeParse(values);
@@ -33,13 +35,13 @@ export async function createTask(
   const task = await db.tasks.create({ ...rest, listId, dueAt: combineDueAt(dueDate, dueTime) });
   revalidateList(listId);
 
-  return actionOk({ id: task.id });
+  return actionOk({ id: task.id, title: task.title });
 }
 
 export async function updateTask(
   taskId: string,
   values: unknown,
-): Promise<ActionResult<{ id: string }>> {
+): Promise<ActionResult<SavedTask>> {
   await requireSession();
 
   const parsed = taskFormSchema.safeParse(values);
@@ -51,7 +53,7 @@ export async function updateTask(
 
   revalidateList(task.listId);
 
-  return actionOk({ id: task.id });
+  return actionOk({ id: task.id, title: task.title });
 }
 
 export async function deleteTask(taskId: string): Promise<ActionResult> {

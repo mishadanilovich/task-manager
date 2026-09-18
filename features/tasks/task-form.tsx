@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import type { SavedTask } from "./actions";
 import { DueDatePicker } from "./due-date-picker";
 import { PriorityPicker } from "./priority-picker";
 import { STATUS_VIEW, TaskStatusDot } from "./task-status";
@@ -33,8 +34,8 @@ export type TaskFormProps = {
   schema: ZodType<TaskFormValues, TaskFormValues>;
   defaultValues: TaskFormValues;
   submitLabel: string;
-  action: (values: TaskFormValues) => Promise<ActionResult<{ id: string }>>;
-  onSuccess: () => void;
+  action: (values: TaskFormValues) => Promise<ActionResult<SavedTask>>;
+  onSuccess: (task: SavedTask) => void;
   onCancel: () => void;
 };
 

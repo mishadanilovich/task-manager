@@ -44,9 +44,9 @@ export function CreateTaskButton({ listId, listName, className }: CreateTaskButt
           defaultValues={EMPTY_TASK_FORM}
           submitLabel="Создать задачу"
           action={(values) => createTask(listId, values)}
-          onSuccess={() => {
+          onSuccess={({ title }) => {
             setOpen(false);
-            toast.success("Задача создана");
+            toast.success(`Задача «${title}» создана`);
           }}
           onCancel={() => setOpen(false)}
         />

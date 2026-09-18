@@ -12,7 +12,10 @@ const meta = {
     schema: taskFormSchema,
     defaultValues: EMPTY_TASK_FORM,
     submitLabel: "Создать задачу",
-    action: fn<TaskFormProps["action"]>(async () => ({ ok: true, data: { id: "task-new" } })),
+    action: fn<TaskFormProps["action"]>(async (values) => ({
+      ok: true,
+      data: { id: "task-new", title: values.title },
+    })),
     onSuccess: fn(),
     onCancel: fn(),
   },
@@ -45,7 +48,10 @@ export const CreatesTask: Story = {
         dueTime: null,
       }),
     );
-    await expect(args.onSuccess).toHaveBeenCalledOnce();
+    await expect(args.onSuccess).toHaveBeenCalledWith({
+      id: "task-new",
+      title: "Разделить e2e на два джоба",
+    });
   },
 };
 
