@@ -63,3 +63,17 @@ export function formatDueAt(dueAt: Date, withTime: boolean): string {
 export function formatShortDate(date: Date): string {
   return date.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit" });
 }
+
+export function formatFullDate(date: Date, withTime: boolean): string {
+  const formatted = date.toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  if (!withTime) return formatted;
+
+  const time = date.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+
+  return `${formatted}, ${time}`;
+}
