@@ -52,3 +52,5 @@ next-env.d.ts
 /storybook-static
 
 *storybook.log
+
+!.env.example

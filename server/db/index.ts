@@ -1,5 +1,3 @@
-import "server-only";
-
 import { createMemoryDatabase } from "./memory";
 import type { Database } from "./repository";
 import { createSeedData } from "./seed";
