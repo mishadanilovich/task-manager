@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 
 import { useMounted } from "@/lib/use-mounted";
+import { Button } from "@/components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const THEMES = [
@@ -43,14 +44,15 @@ export function ThemeToggle() {
         ))}
       </ToggleGroup>
 
-      <button
-        type="button"
+      <Button
+        variant="outline"
+        size="icon"
         onClick={cycle}
         aria-label={`Тема оформления: ${THEMES.find((item) => item.value === current)?.label ?? "авто"}`}
-        className="flex size-[34px] items-center justify-center rounded-[9px] border border-border bg-muted text-body-l sm:hidden"
+        className="size-[34px] rounded-[9px] bg-muted font-normal sm:hidden"
       >
         {current ? GLYPHS[current] : GLYPHS.system}
-      </button>
+      </Button>
     </>
   );
 }

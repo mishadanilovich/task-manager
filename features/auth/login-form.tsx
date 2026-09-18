@@ -86,13 +86,15 @@ export function LoginForm({ action, defaultValues = DEMO_CREDENTIALS }: LoginFor
                     {...field}
                   />
                 </FormControl>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="inline"
                   onClick={() => setPasswordVisible((visible) => !visible)}
-                  className="absolute top-1/2 right-3 -translate-y-1/2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase hover:text-foreground"
+                  className="absolute top-1/2 right-3 -translate-y-1/2 font-mono text-[11px] font-normal tracking-[0.08em] text-muted-foreground uppercase hover:bg-transparent hover:text-foreground"
                 >
                   {passwordVisible ? "Скрыть" : "Показать"}
-                </button>
+                </Button>
               </div>
               <FormMessage />
             </FormItem>

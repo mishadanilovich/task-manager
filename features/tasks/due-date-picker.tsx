@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ru } from "react-day-picker/locale";
 
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -59,12 +60,22 @@ export function DueDatePicker({ value, onChange, disabled, invalid, id }: DueDat
           onSelect={pick}
         />
         <div className="mt-3 flex justify-between border-t border-border pt-3 font-mono text-[11px] tracking-[0.08em] uppercase">
-          <button type="button" className="text-primary" onClick={() => pick(new Date())}>
+          <Button
+            variant="link"
+            size="inline"
+            className="font-mono text-[11px] tracking-[0.08em] uppercase"
+            onClick={() => pick(new Date())}
+          >
             Сегодня
-          </button>
-          <button type="button" className="text-muted-foreground" onClick={() => pick(undefined)}>
+          </Button>
+          <Button
+            variant="link"
+            size="inline"
+            className="font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase"
+            onClick={() => pick(undefined)}
+          >
             Убрать
-          </button>
+          </Button>
         </div>
       </PopoverContent>
     </Popover>

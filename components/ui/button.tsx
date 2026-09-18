@@ -25,6 +25,7 @@ const buttonVariants = cva(
         lg: "h-12 px-5 has-[>svg]:px-4",
         icon: "size-10",
         "icon-sm": "size-9",
+        inline: "h-auto gap-1 p-0 text-inherit",
       },
     },
     defaultVariants: {

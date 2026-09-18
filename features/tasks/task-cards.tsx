@@ -1,6 +1,7 @@
 import { cn } from "cn";
 
 import { isOverdue, type Task } from "@/domain/task";
+import { Button } from "@/components/ui/button";
 
 import { updateTaskStatus } from "./actions";
 import { TaskDeadline } from "./task-deadline";
@@ -25,16 +26,17 @@ function TaskCardItem({ task, listName, now }: { task: Task; listName: string; n
         listName={listName}
         now={now}
         trigger={
-          <button
-            type="button"
+          <Button
+            variant="link"
+            size="inline"
             className={cn(
-              "text-left text-body-l leading-[1.35] font-medium",
+              "justify-start text-left text-body-l leading-[1.35] whitespace-normal text-foreground",
               overdue && "font-semibold",
               isDone && "line-through",
             )}
           >
             {task.title}
-          </button>
+          </Button>
         }
       />
       <TaskDeadline task={task} now={now} layout="inline" />

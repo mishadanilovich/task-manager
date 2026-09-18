@@ -1,5 +1,6 @@
 import { signOut } from "@/features/auth/actions";
 import { ThemeToggle } from "@/features/theme/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 import { Logo } from "./logo";
 import { MobileUserMenu } from "./mobile-user-menu";
@@ -35,12 +36,14 @@ export function AppHeader({ email }: { email: string }) {
           </span>
 
           <form action={signOut} className="hidden sm:block">
-            <button
+            <Button
               type="submit"
-              className="rounded-[9px] border border-b-2 border-border bg-card px-[13px] py-[7px] text-caption text-muted-foreground transition-colors hover:border-border-hover hover:text-foreground active:translate-y-px active:border-b"
+              variant="outline"
+              size="sm"
+              className="h-auto rounded-[9px] px-[13px] py-[7px] text-caption font-normal text-muted-foreground hover:text-foreground"
             >
               Выход
-            </button>
+            </Button>
           </form>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { cn } from "cn";
 
 import { isOverdue, type Task } from "@/domain/task";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -36,16 +37,17 @@ function TaskTableRow({ task, listName, now }: { task: Task; listName: string; n
               listName={listName}
               now={now}
               trigger={
-                <button
-                  type="button"
+                <Button
+                  variant="link"
+                  size="inline"
                   className={cn(
-                    "text-left text-body-l font-medium hover:underline",
+                    "justify-start text-left text-body-l whitespace-normal text-foreground",
                     overdue && "font-semibold",
                     isDone && "line-through",
                   )}
                 >
                   {task.title}
-                </button>
+                </Button>
               }
             />
           </span>
