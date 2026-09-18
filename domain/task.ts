@@ -27,3 +27,7 @@ export type Task = {
 export function isOpen(task: Task): boolean {
   return task.status !== "done";
 }
+
+export function isOverdue(task: Task, now: Date): boolean {
+  return isOpen(task) && task.dueAt !== null && task.dueAt.getTime() < now.getTime();
+}
