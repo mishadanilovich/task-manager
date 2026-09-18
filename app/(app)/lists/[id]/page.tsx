@@ -46,7 +46,7 @@ export default async function ListPage({ params, searchParams }: PageProps<"/lis
         {tasks.length === 0 ? (
           <TasksEmpty listName={list.name} status={statusFilter} />
         ) : (
-          <TaskTable tasks={tasks} now={now} />
+          <TaskTable tasks={tasks} listName={list.name} now={now} />
         )}
       </div>
     </TooltipProvider>

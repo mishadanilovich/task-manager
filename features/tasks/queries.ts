@@ -27,15 +27,3 @@ export async function getListTasks(
 
   return { list, tasks: sortTasks(visible, now), stats: getListStats(tasks, now), now };
 }
-
-export async function getTask(taskId: string): Promise<{ task: Task; list: TaskList } | null> {
-  await requireSession();
-
-  const task = await db.tasks.findById(taskId);
-  if (!task) return null;
-
-  const list = await db.lists.findById(task.listId);
-  if (!list) return null;
-
-  return { task, list };
-}

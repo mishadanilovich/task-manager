@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { cn } from "cn";
 
 import { isOverdue, type Task } from "@/domain/task";
@@ -13,10 +12,11 @@ import {
 
 import { updateTaskStatus } from "./actions";
 import { TaskDeadline } from "./task-deadline";
+import { TaskDialog } from "./task-dialog";
 import { TaskPriorityBadge } from "./task-priority";
 import { TaskStatusSelect } from "./task-status-select";
 
-function TaskTableRow({ task, now }: { task: Task; now: Date }) {
+function TaskTableRow({ task, listName, now }: { task: Task; listName: string; now: Date }) {
   const overdue = isOverdue(task, now);
   const isDone = task.status === "done";
 
@@ -31,16 +31,23 @@ function TaskTableRow({ task, now }: { task: Task; now: Date }) {
         <span className="flex flex-col gap-0.5">
           <span className="flex items-center gap-2.5">
             {isDone ? <span className="font-mono text-[12px] text-success">✓</span> : null}
-            <Link
-              href={`/tasks/${task.id}`}
-              className={cn(
-                "text-body-l font-medium hover:underline",
-                overdue && "font-semibold",
-                isDone && "line-through",
-              )}
-            >
-              {task.title}
-            </Link>
+            <TaskDialog
+              task={task}
+              listName={listName}
+              now={now}
+              trigger={
+                <button
+                  type="button"
+                  className={cn(
+                    "cursor-pointer text-left text-body-l font-medium hover:underline",
+                    overdue && "font-semibold",
+                    isDone && "line-through",
+                  )}
+                >
+                  {task.title}
+                </button>
+              }
+            />
           </span>
           {task.description && !isDone ? (
             <span className="line-clamp-1 text-caption text-muted-foreground">
@@ -70,7 +77,15 @@ function TaskTableRow({ task, now }: { task: Task; now: Date }) {
   );
 }
 
-export function TaskTable({ tasks, now }: { tasks: Task[]; now: Date }) {
+export function TaskTable({
+  tasks,
+  listName,
+  now,
+}: {
+  tasks: Task[];
+  listName: string;
+  now: Date;
+}) {
   const openTasks = tasks.filter((task) => task.status !== "done");
   const doneTasks = tasks.filter((task) => task.status === "done");
 
@@ -80,15 +95,15 @@ export function TaskTable({ tasks, now }: { tasks: Task[]; now: Date }) {
         <TableHeader>
           <TableRow>
             <TableHead>Задача</TableHead>
-            <TableHead className="w-[176px]">Статус</TableHead>
-            <TableHead className="w-[128px]">Приоритет</TableHead>
-            <TableHead className="w-[196px]">Дедлайн</TableHead>
+            <TableHead className="w-44">Статус</TableHead>
+            <TableHead className="w-32">Приоритет</TableHead>
+            <TableHead className="w-49">Дедлайн</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {openTasks.map((task) => (
-            <TaskTableRow key={task.id} task={task} now={now} />
+            <TaskTableRow key={task.id} task={task} listName={listName} now={now} />
           ))}
 
           {doneTasks.length > 0 && openTasks.length > 0 ? (
@@ -103,7 +118,7 @@ export function TaskTable({ tasks, now }: { tasks: Task[]; now: Date }) {
           ) : null}
 
           {doneTasks.map((task) => (
-            <TaskTableRow key={task.id} task={task} now={now} />
+            <TaskTableRow key={task.id} task={task} listName={listName} now={now} />
           ))}
         </TableBody>
       </Table>
