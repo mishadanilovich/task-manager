@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createTaskFormSchema, credentialsSchema, listFormSchema, taskFormSchema } from "./schemas";
+import { credentialsSchema, listFormSchema, taskFormSchema } from "./schemas";
 
 const validTask = {
   title: "Починить релизный пайплайн",
@@ -88,32 +88,15 @@ describe("taskFormSchema", () => {
     expect(result.success).toBe(true);
   });
 
+  it("принимает дедлайн в прошлом", () => {
+    const result = taskFormSchema.safeParse({ ...validTask, dueDate: "2020-01-01" });
+
+    expect(result.success).toBe(true);
+  });
+
   it("отклоняет неизвестный статус", () => {
     const result = taskFormSchema.safeParse({ ...validTask, status: "archived" });
 
     expect(result.success).toBe(false);
-  });
-});
-
-describe("createTaskFormSchema", () => {
-  const now = new Date(2026, 8, 17, 12, 0);
-
-  it("не принимает дедлайн в прошлом при создании", () => {
-    const result = createTaskFormSchema(now).safeParse({ ...validTask, dueDate: "2026-09-05" });
-
-    expect(result.success).toBe(false);
-    expect(result.error?.issues[0].message).toBe("Дата в прошлом");
-  });
-
-  it("принимает сегодняшнюю дату без времени", () => {
-    const result = createTaskFormSchema(now).safeParse({ ...validTask, dueDate: "2026-09-17" });
-
-    expect(result.success).toBe(true);
-  });
-
-  it("не мешает сохранить просроченную задачу при редактировании", () => {
-    const result = taskFormSchema.safeParse({ ...validTask, dueDate: "2026-09-05" });
-
-    expect(result.success).toBe(true);
   });
 });

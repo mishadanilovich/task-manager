@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { createTaskFormSchema } from "@/domain/schemas";
+import { taskFormSchema } from "@/domain/schemas";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,7 +40,7 @@ export function CreateTaskButton({ listId, listName, className }: CreateTaskButt
         </DialogHeader>
 
         <TaskForm
-          schema={createTaskFormSchema(new Date())}
+          schema={taskFormSchema}
           defaultValues={EMPTY_TASK_FORM}
           submitLabel="Создать задачу"
           action={(values) => createTask(listId, values)}

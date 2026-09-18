@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { combineDueAt } from "@/domain/deadline";
-import { createTaskFormSchema, taskFormSchema, taskStatusSchema } from "@/domain/schemas";
+import { taskFormSchema, taskStatusSchema } from "@/domain/schemas";
 import { actionError, actionOk, type ActionResult } from "@/lib/action-result";
 import { requireSession } from "@/server/auth/session";
 import { db } from "@/server/db";
@@ -23,7 +23,7 @@ export async function createTask(
 ): Promise<ActionResult<{ id: string }>> {
   await requireSession();
 
-  const parsed = createTaskFormSchema(new Date()).safeParse(values);
+  const parsed = taskFormSchema.safeParse(values);
   if (!parsed.success) return invalidForm(parsed.error);
 
   const list = await db.lists.findById(listId);
