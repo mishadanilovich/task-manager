@@ -5,6 +5,7 @@ import type { ListCounters } from "@/domain/list-stats";
 import { Progress } from "@/components/ui/progress";
 
 import { ListIndicator } from "./list-indicator";
+import { ListMenu } from "./list-menu";
 import type { ListWithStats } from "./queries";
 
 const COUNTER_CELLS = [
@@ -72,6 +73,13 @@ export function ListCard({ list, now }: { list: ListWithStats; now: Date }) {
           </Link>
           <ListIndicator stats={list.stats} now={now} />
         </div>
+
+        <ListMenu
+          id={list.id}
+          name={list.name}
+          taskCount={counters.total}
+          overdueCount={counters.overdue}
+        />
       </div>
 
       <div className="grid grid-cols-4 gap-2">

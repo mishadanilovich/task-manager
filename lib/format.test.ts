@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDeadline, formatLists, formatOverdue, formatTasks, pluralize } from "./format";
+import {
+  formatDeadline,
+  formatLists,
+  formatOverdue,
+  formatOverdueTasks,
+  formatTasks,
+  pluralize,
+} from "./format";
 
 describe("pluralize", () => {
   it.each([
@@ -30,9 +37,15 @@ describe("счётчики", () => {
     expect(formatTasks(47)).toBe("47 задач");
   });
 
-  it("склоняет просроченные", () => {
+  it("склоняет просроченные в сводке", () => {
     expect(formatOverdue(1)).toBe("1 просрочена");
     expect(formatOverdue(4)).toBe("4 просрочено");
+  });
+
+  it("склоняет просроченные внутри предложения", () => {
+    expect(formatOverdueTasks(1)).toBe("1 просроченную");
+    expect(formatOverdueTasks(2)).toBe("2 просроченные");
+    expect(formatOverdueTasks(5)).toBe("5 просроченных");
   });
 });
 

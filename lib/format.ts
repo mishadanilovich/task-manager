@@ -25,6 +25,10 @@ export function formatOverdue(count: number): string {
   return `${count} ${pluralize(count, ["просрочена", "просрочено", "просрочено"])}`;
 }
 
+export function formatOverdueTasks(count: number): string {
+  return `${count} ${pluralize(count, ["просроченную", "просроченные", "просроченных"])}`;
+}
+
 export function formatDeadline({ direction, unit, value }: DeadlineDistance): string {
   const units =
     unit === "hour"

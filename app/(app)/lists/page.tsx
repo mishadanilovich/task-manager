@@ -1,3 +1,4 @@
+import { CreateListButton } from "@/features/lists/create-list-button";
 import { ListCard } from "@/features/lists/list-card";
 import { ListsEmpty } from "@/features/lists/lists-empty";
 import { ListsSearch } from "@/features/lists/lists-search";
@@ -24,7 +25,10 @@ export default async function ListsPage({ searchParams }: PageProps<"/lists">) {
           </div>
         </div>
 
-        <ListsSearch />
+        <div className="flex gap-3">
+          <ListsSearch className="flex-1 sm:flex-none" />
+          <CreateListButton />
+        </div>
       </div>
 
       {lists.length === 0 ? (

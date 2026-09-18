@@ -1,5 +1,7 @@
 import { Logo } from "@/components/layout/logo";
 
+import { CreateListButton } from "./create-list-button";
+
 export function ListsEmpty({ query }: { query: string }) {
   if (query) {
     return (
@@ -25,6 +27,7 @@ export function ListsEmpty({ query }: { query: string }) {
         Создайте первый список — например «Релиз» или «Домашние дела». Задачи и дедлайны добавите
         внутри.
       </p>
+      <CreateListButton className="mt-1.5" />
     </div>
   );
 }
