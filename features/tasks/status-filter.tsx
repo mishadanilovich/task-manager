@@ -6,10 +6,10 @@ import type { ListCounters } from "@/domain/list-stats";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const FILTERS = [
-  { value: "all", label: "Все", counter: "total" },
-  { value: "new", label: "New", counter: "new" },
-  { value: "in_progress", label: "In progress", counter: "in_progress" },
-  { value: "done", label: "Done", counter: "done" },
+  { value: "all", label: "Все", shortLabel: "Все", counter: "total" },
+  { value: "new", label: "New", shortLabel: "New", counter: "new" },
+  { value: "in_progress", label: "In progress", shortLabel: "Prog", counter: "in_progress" },
+  { value: "done", label: "Done", shortLabel: "Done", counter: "done" },
 ] as const;
 
 export function StatusFilter({ counters }: { counters: ListCounters }) {
@@ -28,11 +28,17 @@ export function StatusFilter({ counters }: { counters: ListCounters }) {
 
   return (
     <Tabs value={current} onValueChange={select}>
-      <TabsList aria-label="Фильтр по статусу">
+      <TabsList aria-label="Фильтр по статусу" className="w-full sm:w-fit">
         {FILTERS.map((filter) => (
-          <TabsTrigger key={filter.value} value={filter.value}>
-            {filter.label}
-            <span className="font-mono text-[11.5px] text-muted-foreground">
+          <TabsTrigger
+            key={filter.value}
+            value={filter.value}
+            aria-label={`${filter.label}: ${counters[filter.counter]}`}
+            className="flex-1 px-1 sm:flex-none sm:px-[15px]"
+          >
+            <span className="sm:hidden">{filter.shortLabel}</span>
+            <span className="hidden sm:inline">{filter.label}</span>
+            <span className="hidden font-mono text-[11.5px] text-muted-foreground sm:inline">
               {counters[filter.counter]}
             </span>
           </TabsTrigger>

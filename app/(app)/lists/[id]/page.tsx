@@ -5,6 +5,7 @@ import { TASK_STATUSES, type TaskStatus } from "@/domain/task";
 import { CreateTaskButton } from "@/features/tasks/create-task-button";
 import { getListTasks } from "@/features/tasks/queries";
 import { StatusFilter } from "@/features/tasks/status-filter";
+import { TaskCards } from "@/features/tasks/task-cards";
 import { TaskTable } from "@/features/tasks/task-table";
 import { TasksEmpty } from "@/features/tasks/tasks-empty";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -40,7 +41,7 @@ export default async function ListPage({ params, searchParams }: PageProps<"/lis
           <h1 className="font-display text-[28px] font-semibold tracking-[-0.02em] sm:text-[36px]">
             {list.name}
           </h1>
-          <CreateTaskButton listId={list.id} listName={list.name} />
+          <CreateTaskButton listId={list.id} listName={list.name} className="w-full sm:w-auto" />
         </div>
 
         <div className="mb-3.5">
@@ -57,7 +58,10 @@ export default async function ListPage({ params, searchParams }: PageProps<"/lis
             }
           />
         ) : (
-          <TaskTable tasks={tasks} listName={list.name} now={now} />
+          <>
+            <TaskTable tasks={tasks} listName={list.name} now={now} className="hidden md:block" />
+            <TaskCards tasks={tasks} listName={list.name} now={now} className="md:hidden" />
+          </>
         )}
       </div>
     </TooltipProvider>

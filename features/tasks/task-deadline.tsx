@@ -1,7 +1,6 @@
 import { cn } from "cn";
 
-import { getDeadlineDistance, getDeadlineState } from "@/domain/deadline";
-import { splitDueAt } from "@/domain/deadline";
+import { getDeadlineDistance, getDeadlineState, splitDueAt } from "@/domain/deadline";
 import type { Task } from "@/domain/task";
 import { formatDeadline, formatDueAt, formatFullDate, formatShortDate } from "@/lib/format";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -13,7 +12,13 @@ const STATE_CLASS = {
   none: "text-muted-foreground",
 } as const;
 
-export function TaskDeadline({ task, now }: { task: Task; now: Date }) {
+export type TaskDeadlineProps = {
+  task: Task;
+  now: Date;
+  layout?: "stacked" | "inline";
+};
+
+export function TaskDeadline({ task, now, layout = "stacked" }: TaskDeadlineProps) {
   if (task.status === "done") {
     return (
       <span className="text-caption text-muted-foreground">
@@ -28,13 +33,25 @@ export function TaskDeadline({ task, now }: { task: Task; now: Date }) {
 
   const state = getDeadlineState(task, now);
   const withTime = splitDueAt(task.dueAt).dueTime !== null;
+  const label = formatDeadline(getDeadlineDistance(task.dueAt, now));
+
+  if (layout === "inline") {
+    return (
+      <span className={cn("text-caption", STATE_CLASS[state])}>
+        {label}{" "}
+        <span className="font-mono font-normal text-muted-foreground">
+          · {formatDueAt(task.dueAt, withTime)}
+        </span>
+      </span>
+    );
+  }
 
   return (
     <span className="flex flex-col gap-0.5">
       <Tooltip>
         <TooltipTrigger asChild>
           <span className={cn("w-fit cursor-default text-caption", STATE_CLASS[state])}>
-            {formatDeadline(getDeadlineDistance(task.dueAt, now))}
+            {label}
           </span>
         </TooltipTrigger>
         <TooltipContent>{formatFullDate(task.dueAt, withTime)}</TooltipContent>

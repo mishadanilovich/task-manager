@@ -2,6 +2,7 @@ import { signOut } from "@/features/auth/actions";
 import { ThemeToggle } from "@/features/theme/theme-toggle";
 
 import { Logo } from "./logo";
+import { MobileUserMenu } from "./mobile-user-menu";
 
 function getInitials(email: string): string {
   return email.slice(0, 2).toUpperCase();
@@ -24,11 +25,13 @@ export function AppHeader({ email }: { email: string }) {
 
           <span className="hidden h-6 w-px bg-border sm:block" aria-hidden />
 
-          <span className="flex items-center gap-2.5">
-            <span className="flex size-[34px] items-center justify-center rounded-lg border border-border bg-accent font-mono text-[11px] font-semibold sm:size-7 sm:rounded-[8px]">
+          <MobileUserMenu email={email} initials={getInitials(email)} />
+
+          <span className="hidden items-center gap-2.5 sm:flex">
+            <span className="flex size-7 items-center justify-center rounded-[8px] border border-border bg-accent font-mono text-[11px] font-semibold">
               {getInitials(email)}
             </span>
-            <span className="hidden text-body font-medium sm:inline">{getDisplayName(email)}</span>
+            <span className="text-body font-medium">{getDisplayName(email)}</span>
           </span>
 
           <form action={signOut} className="hidden sm:block">

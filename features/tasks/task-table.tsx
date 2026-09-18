@@ -81,16 +81,23 @@ export function TaskTable({
   tasks,
   listName,
   now,
+  className,
 }: {
   tasks: Task[];
   listName: string;
   now: Date;
+  className?: string;
 }) {
   const openTasks = tasks.filter((task) => task.status !== "done");
   const doneTasks = tasks.filter((task) => task.status === "done");
 
   return (
-    <div className="overflow-hidden rounded-[13px] border border-b-2 border-border bg-card shadow-raised">
+    <div
+      className={cn(
+        "overflow-hidden rounded-[13px] border border-b-2 border-border bg-card shadow-raised",
+        className,
+      )}
+    >
       <Table>
         <TableHeader>
           <TableRow>
