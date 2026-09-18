@@ -11,9 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { updateTaskStatus } from "./actions";
 import { TaskDeadline } from "./task-deadline";
 import { TaskPriorityBadge } from "./task-priority";
-import { TaskStatusLabel } from "./task-status";
+import { TaskStatusSelect } from "./task-status-select";
 
 function TaskTableRow({ task, now }: { task: Task; now: Date }) {
   const overdue = isOverdue(task, now);
@@ -50,9 +51,12 @@ function TaskTableRow({ task, now }: { task: Task; now: Date }) {
       </TableCell>
 
       <TableCell className="px-5 py-3.5">
-        <span className="inline-flex items-center rounded-sm border border-border bg-card px-2.5 py-1.5 text-caption">
-          <TaskStatusLabel status={task.status} />
-        </span>
+        <TaskStatusSelect
+          taskId={task.id}
+          status={task.status}
+          action={updateTaskStatus}
+          className="w-full"
+        />
       </TableCell>
 
       <TableCell className="px-5 py-3.5">
