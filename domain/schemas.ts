@@ -34,20 +34,17 @@ export const taskFormSchema = z
     description: z
       .string()
       .trim()
-      .max(TASK_DESCRIPTION_MAX_LENGTH, `Не длиннее ${TASK_DESCRIPTION_MAX_LENGTH} символов`)
-      .default(""),
+      .max(TASK_DESCRIPTION_MAX_LENGTH, `Не длиннее ${TASK_DESCRIPTION_MAX_LENGTH} символов`),
     status: z.enum(TASK_STATUSES),
     priority: z.enum(TASK_PRIORITIES),
     dueDate: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/, "Дата в формате дд.мм.гггг")
-      .nullable()
-      .default(null),
+      .nullable(),
     dueTime: z
       .string()
       .regex(/^\d{2}:\d{2}$/, "Время в формате чч:мм")
-      .nullable()
-      .default(null),
+      .nullable(),
   })
   .refine((values) => values.dueTime === null || values.dueDate !== null, {
     message: "Сначала выберите дату",

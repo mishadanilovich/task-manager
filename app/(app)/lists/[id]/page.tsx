@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { TASK_STATUSES, type TaskStatus } from "@/domain/task";
+import { CreateTaskButton } from "@/features/tasks/create-task-button";
 import { getListTasks } from "@/features/tasks/queries";
 import { StatusFilter } from "@/features/tasks/status-filter";
 import { TaskTable } from "@/features/tasks/task-table";
@@ -35,16 +36,26 @@ export default async function ListPage({ params, searchParams }: PageProps<"/lis
           <span className="font-medium text-foreground">{list.name}</span>
         </nav>
 
-        <h1 className="mb-5 font-display text-[28px] font-semibold tracking-[-0.02em] sm:mb-[22px] sm:text-[36px]">
-          {list.name}
-        </h1>
+        <div className="mb-5 flex flex-col gap-4 sm:mb-[22px] sm:flex-row sm:items-end sm:justify-between">
+          <h1 className="font-display text-[28px] font-semibold tracking-[-0.02em] sm:text-[36px]">
+            {list.name}
+          </h1>
+          <CreateTaskButton listId={list.id} listName={list.name} />
+        </div>
 
         <div className="mb-3.5">
           <StatusFilter counters={counters} />
         </div>
 
         {tasks.length === 0 ? (
-          <TasksEmpty listName={list.name} status={statusFilter} />
+          <TasksEmpty
+            listId={list.id}
+            listName={list.name}
+            status={statusFilter}
+            action={
+              statusFilter ? null : <CreateTaskButton listId={list.id} listName={list.name} />
+            }
+          />
         ) : (
           <TaskTable tasks={tasks} listName={list.name} now={now} />
         )}
