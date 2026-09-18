@@ -88,7 +88,7 @@ export function LoginForm({ action, defaultValues = DEMO_CREDENTIALS }: LoginFor
                   <button
                     type="button"
                     onClick={() => setPasswordVisible((visible) => !visible)}
-                    className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase hover:text-foreground"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 font-mono text-[11px] tracking-[0.08em] text-muted-foreground uppercase hover:text-foreground"
                   >
                     {passwordVisible ? "Скрыть" : "Показать"}
                   </button>

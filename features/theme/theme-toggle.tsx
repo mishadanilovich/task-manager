@@ -39,7 +39,7 @@ export function ThemeToggle() {
             aria-checked={current === value}
             onClick={() => setTheme(value)}
             className={cn(
-              "cursor-pointer rounded-sm px-[11px] py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors",
+              "rounded-sm px-[11px] py-1.5 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors",
               current === value
                 ? "border border-border bg-card text-foreground"
                 : "text-muted-foreground hover:text-foreground",
@@ -54,7 +54,7 @@ export function ThemeToggle() {
         type="button"
         onClick={cycle}
         aria-label={`Тема оформления: ${THEMES.find((item) => item.value === current)?.label ?? "авто"}`}
-        className="flex size-[34px] cursor-pointer items-center justify-center rounded-[9px] border border-border bg-muted text-body-l sm:hidden"
+        className="flex size-[34px] items-center justify-center rounded-[9px] border border-border bg-muted text-body-l sm:hidden"
       >
         {current ? GLYPHS[current] : GLYPHS.system}
       </button>

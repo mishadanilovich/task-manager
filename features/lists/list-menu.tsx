@@ -69,7 +69,7 @@ export function ListMenu({ id, name, taskCount, overdueCount }: ListMenuProps) {
       <DropdownMenu>
         <DropdownMenuTrigger
           aria-label={`Действия со списком «${name}»`}
-          className="flex size-8 cursor-pointer items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=open]:bg-muted data-[state=open]:text-foreground"
+          className="flex size-8 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[state=open]:bg-muted data-[state=open]:text-foreground"
         >
           <MoreHorizontalIcon className="size-4" />
         </DropdownMenuTrigger>

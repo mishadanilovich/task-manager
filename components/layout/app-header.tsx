@@ -34,7 +34,7 @@ export function AppHeader({ email }: { email: string }) {
           <form action={signOut} className="hidden sm:block">
             <button
               type="submit"
-              className="cursor-pointer rounded-[9px] border border-b-2 border-border bg-card px-[13px] py-[7px] text-caption text-muted-foreground transition-colors hover:border-border-hover hover:text-foreground active:translate-y-px active:border-b"
+              className="rounded-[9px] border border-b-2 border-border bg-card px-[13px] py-[7px] text-caption text-muted-foreground transition-colors hover:border-border-hover hover:text-foreground active:translate-y-px active:border-b"
             >
               Выход
             </button>

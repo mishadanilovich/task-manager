@@ -39,7 +39,7 @@ function TaskTableRow({ task, listName, now }: { task: Task; listName: string; n
                 <button
                   type="button"
                   className={cn(
-                    "cursor-pointer text-left text-body-l font-medium hover:underline",
+                    "text-left text-body-l font-medium hover:underline",
                     overdue && "font-semibold",
                     isDone && "line-through",
                   )}

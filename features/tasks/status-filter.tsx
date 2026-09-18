@@ -30,7 +30,7 @@ export function StatusFilter({ counters }: { counters: ListCounters }) {
     <Tabs value={current} onValueChange={select}>
       <TabsList aria-label="Фильтр по статусу">
         {FILTERS.map((filter) => (
-          <TabsTrigger key={filter.value} value={filter.value} className="cursor-pointer">
+          <TabsTrigger key={filter.value} value={filter.value}>
             {filter.label}
             <span className="font-mono text-[11.5px] text-muted-foreground">
               {counters[filter.counter]}

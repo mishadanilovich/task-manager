@@ -187,4 +187,15 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
   }
+
+  button:not(:disabled),
+  summary,
+  label[for],
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="radio"]:not([aria-disabled="true"]),
+  [role="option"]:not([aria-disabled="true"]),
+  [role="menuitem"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
 }

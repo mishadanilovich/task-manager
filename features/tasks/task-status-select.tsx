@@ -55,7 +55,7 @@ export function TaskStatusSelect({ taskId, status, action, className }: TaskStat
 
       <SelectContent>
         {TASK_STATUSES.map((value) => (
-          <SelectItem key={value} value={value} className="cursor-pointer">
+          <SelectItem key={value} value={value}>
             <TaskStatusDot status={value} />
             {STATUS_VIEW[value].label}
           </SelectItem>
