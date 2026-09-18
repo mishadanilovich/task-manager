@@ -16,12 +16,3 @@ export function TaskStatusDot({ status }: { status: TaskStatus }) {
     />
   );
 }
-
-export function TaskStatusLabel({ status }: { status: TaskStatus }) {
-  return (
-    <span className="flex items-center gap-[7px]">
-      <TaskStatusDot status={status} />
-      {STATUS_VIEW[status].label}
-    </span>
-  );
-}
