@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { combineDueAt } from "./deadline";
 import { LIST_NAME_MAX_LENGTH } from "./list";
 import { TASK_PRIORITIES, TASK_STATUSES } from "./task";
 
@@ -54,5 +55,16 @@ export const taskFormSchema = z
   });
 
 export type TaskFormValues = z.infer<typeof taskFormSchema>;
+
+export function createTaskFormSchema(now: Date) {
+  return taskFormSchema.refine(
+    (values) => {
+      const dueAt = combineDueAt(values.dueDate, values.dueTime);
+
+      return dueAt === null || dueAt.getTime() >= now.getTime();
+    },
+    { message: "Дата в прошлом", path: ["dueDate"] },
+  );
+}
 
 export const taskStatusSchema = z.enum(TASK_STATUSES);
