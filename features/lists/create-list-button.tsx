@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import type { ListFormValues } from "@/domain/schemas";
 import { Button } from "@/components/ui/button";
 
 import { createList } from "./actions";
@@ -12,14 +11,7 @@ import { ListFormDialog } from "./list-form-dialog";
 
 export function CreateListButton({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
   const router = useRouter();
-
-  const action = (values: ListFormValues) => {
-    setName(values.name);
-
-    return createList(values);
-  };
 
   return (
     <>
@@ -33,8 +25,8 @@ export function CreateListButton({ className }: { className?: string }) {
         title="Новый список"
         description="Название можно изменить в любой момент."
         submitLabel="Создать"
-        action={action}
-        onSuccess={({ id }) =>
+        action={createList}
+        onSuccess={({ id, name }) =>
           toast.success(`Список «${name}» создан`, {
             action: { label: "Открыть", onClick: () => router.push(`/lists/${id}`) },
           })

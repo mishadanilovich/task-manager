@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import type { SavedList } from "./actions";
+
 export type ListFormDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -30,8 +32,8 @@ export type ListFormDialogProps = {
   description: string;
   submitLabel: string;
   defaultName?: string;
-  action: (values: ListFormValues) => Promise<ActionResult<{ id: string }>>;
-  onSuccess?: (data: { id: string }) => void;
+  action: (values: ListFormValues) => Promise<ActionResult<SavedList>>;
+  onSuccess?: (data: SavedList) => void;
 };
 
 export function ListFormDialog({
